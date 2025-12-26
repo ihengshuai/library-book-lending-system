@@ -1,4 +1,4 @@
-package com.hs.auth.entity;
+package com.hs.authservice.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 

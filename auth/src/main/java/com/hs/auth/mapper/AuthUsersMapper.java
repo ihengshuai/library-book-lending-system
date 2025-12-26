@@ -1,7 +1,8 @@
 package com.hs.auth.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hs.auth.entity.AuthUsers;
+import com.hs.authservice.entity.AuthUsers;
+
 
 /**
  * <p>

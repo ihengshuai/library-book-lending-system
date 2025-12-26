@@ -1,7 +1,8 @@
-package com.hs.auth.service;
+package com.hs.authservice.service;
 
-import com.hs.auth.entity.AuthUsers;
+
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hs.authservice.entity.AuthUsers;
 
 /**
  * <p>

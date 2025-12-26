@@ -1,9 +1,9 @@
 package com.hs.auth.service.impl;
 
-import com.hs.auth.entity.AuthUsers;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.hs.auth.mapper.AuthUsersMapper;
-import com.hs.auth.service.IAuthUsersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hs.authservice.entity.AuthUsers;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2025-12-26
  */
 @Service
-public class AuthUsersServiceImpl extends ServiceImpl<AuthUsersMapper, AuthUsers> implements IAuthUsersService {
+public class AuthUsersServiceImpl extends ServiceImpl<AuthUsersMapper, AuthUsers> implements IService<AuthUsers> {
 
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-12-26
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/blog")
 public class UserController {
     @RequestMapping("/login")
     public ResultVo login(){

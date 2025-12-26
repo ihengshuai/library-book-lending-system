@@ -17,7 +17,7 @@
         <maven.compiler.compilerVersion>17</maven.compiler.compilerVersion>
 
         <spring-boot-version>4.0.1</spring-boot-version>
-        <hutool-version> 5.8.33</hutool-version>
+        <hutool-version>5.8.33</hutool-version>
         <lombak-version>1.18.42</lombak-version>
 
 
@@ -26,6 +26,7 @@
         <commons-pool2.version>2.11.1</commons-pool2.version>
         <sawgger-version>3.0.0</sawgger-version>
         <freemarker-version>2.3.23</freemarker-version>
+
 
     </properties>
     <dependencyManagement>
@@ -48,12 +49,13 @@
                 <artifactId>spring-boot-starter-test</artifactId>
                 <version>${spring-boot-version}</version>
             </dependency>
-
-            <!-- Sa-Token 权限认证, 在线文档：https://sa-token.cc/ -->
             <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-spring-boot-starter</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${spring-boot-version}</version>
             </dependency>
+
+
             <!--数据库相关依赖-->
             <dependency>
                 <groupId>com.baomidou</groupId>
