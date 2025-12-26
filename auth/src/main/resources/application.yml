@@ -1,0 +1,10 @@
+server:
+  port: 8111
+spring:
+  application:
+    name: auth
+  datasource:
+    username: root
+    password: root123
+    url: jdbc:mysql://127.0.0.1:3306/lbls?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
