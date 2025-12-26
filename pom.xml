@@ -93,8 +93,8 @@
 
             <dependency>
                 <groupId>cn.hutool</groupId>
-                <artifactId>hutool-parent</artifactId>
-                <version>${hutool-version}</version>
+                <artifactId>hutool-all</artifactId>
+                <version>5.8.42</version>
             </dependency>
 
             <dependency>
@@ -102,7 +102,11 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombak-version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.83</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>

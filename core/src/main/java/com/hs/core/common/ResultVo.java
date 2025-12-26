@@ -1,6 +1,10 @@
 package com.hs.core.common;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * 公共响应值类
@@ -8,8 +12,12 @@ import lombok.Data;
  * @param <T>
  */
 @Data
-public class ResultVo<T> {
+@NoArgsConstructor
+public class ResultVo<T> implements Serializable {
 
+
+    @Serial
+    private static final long serialVersionUID = 178566063659455369L;
 
     /**
      * 响应数据
@@ -26,10 +34,6 @@ public class ResultVo<T> {
      */
     private String msg;
 
-
-    public ResultVo() {
-
-    }
 
     public ResultVo(HttpResponseStatus status) {
         this.code = status.getCode();
