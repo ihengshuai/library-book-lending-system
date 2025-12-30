@@ -1,4 +1,4 @@
-package com.hs.auth.dto;
+package com.hs.authservice.dto;
 
 import lombok.Data;
 import lombok.ToString;
