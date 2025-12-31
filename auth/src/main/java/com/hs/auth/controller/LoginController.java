@@ -1,5 +1,6 @@
 package com.hs.auth.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.hs.authservice.dto.LoginDto;
 import com.hs.auth.model.TokenInfo;
 import com.hs.core.common.ResultVo;
@@ -30,21 +31,30 @@ public class LoginController {
 
 
         try {
-            /*// 创建认证令牌
+            // 创建认证令牌
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
             // 执行认证
             Authentication authentication = authenticationManager.authenticate(authToken);
+
             // 认证成功，设置安全上下文
-            SecurityContextHolder.getContext().setAuthentication(authentication);*/
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             // 创建 token
+           /* if(StrUtil.equals(loginDto.getUsername(), "admin")){
+                TokenInfo tokenInfo = new TokenInfo();
+                tokenInfo.setToken("uuid1234567");
+                ResultVo<TokenInfo> result = new ResultVo<>();
+                result.setData(tokenInfo);
+
+                return result;
+            }*/
+
             TokenInfo tokenInfo = new TokenInfo();
             tokenInfo.setToken("uuid1234567");
             ResultVo<TokenInfo> result = new ResultVo<>();
             result.setData(tokenInfo);
 
             return result;
-
         } catch (AuthenticationException e) {
             // 认证失败，返回登录页面并显示错误信息
 

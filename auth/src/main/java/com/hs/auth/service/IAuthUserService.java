@@ -13,6 +13,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-12-30
  */
 public interface IAuthUserService extends IService<AuthUser> {
+
+
+
     /**
      * 更具用户名查询单个用户信息
      * @param username

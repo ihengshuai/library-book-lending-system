@@ -6,14 +6,11 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +21,7 @@ import java.util.Optional;
  * 自定义 token 过滤器
  */
 public class TokenAuthFilter extends BasicAuthenticationFilter {
+
 
 
     public TokenAuthFilter(AuthenticationManager authenticationManager) {
@@ -60,6 +58,7 @@ public class TokenAuthFilter extends BasicAuthenticationFilter {
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
         //角色编码集合
         List<String> roleCodeList = new ArrayList<>();
+        roleCodeList.add("admin");
         roleCodeList = Optional.ofNullable(roleCodeList).orElse(new ArrayList<>());
         //设置角色
         roleCodeList.forEach(r -> {
@@ -72,9 +71,10 @@ public class TokenAuthFilter extends BasicAuthenticationFilter {
         permissionIdList.forEach(p -> {
             authorityList.add(new SimpleGrantedAuthority(p));
         });
-        //配置token认证用户的权限
-        UsernamePasswordAuthenticationToken userAuthorization = new UsernamePasswordAuthenticationToken("admin", token, authorityList);
 
+        //配置token认证用户的权限
+        UsernamePasswordAuthenticationToken userAuthorization = new UsernamePasswordAuthenticationToken("admin", null, authorityList);
+        // 执行认证
         SecurityContextHolder.getContext().setAuthentication(userAuthorization);
 
     }

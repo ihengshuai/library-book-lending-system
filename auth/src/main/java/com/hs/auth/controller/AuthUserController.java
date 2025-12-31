@@ -5,9 +5,8 @@ import com.hs.authservice.dto.UserDto;
 import com.hs.authservice.entity.AuthUser;
 import com.hs.core.common.ResultVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -18,15 +17,22 @@ import org.springframework.stereotype.Controller;
  * @author chenkk
  * @since 2025-12-30
  */
-@Controller
+@RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class AuthUserController {
 
     public final IAuthUserService authUserService;
+
     @PostMapping("/addUer")
-    public ResultVo<AuthUser> addUser(@RequestBody UserDto userDto){
+    public ResultVo<AuthUser> addUser(@RequestBody UserDto userDto) {
         return ResultVo.success();
 
+    }
+
+    @PreAuthorize("hasRole('ad')")
+    @GetMapping("/getUser")
+    public ResultVo getUser() {
+        return ResultVo.success();
     }
 }

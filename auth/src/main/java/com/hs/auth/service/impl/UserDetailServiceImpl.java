@@ -1,11 +1,8 @@
 package com.hs.auth.service.impl;
 
-import com.hs.auth.mapper.AuthUserMapper;
-import com.hs.auth.mapper.UserMapper;
 import com.hs.auth.model.User;
 import com.hs.auth.service.IAuthUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,6 +21,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
+
+        //todo  查权限 角色
         return user;	// UserDetailsImpl 是我们实现的类
     }
 }

@@ -1,36 +1,35 @@
 package com.hs.auth.config;
 
 
-import com.hs.auth.filter.AAA;
 import com.hs.auth.filter.TokenAuthFilter;
-import com.hs.auth.utils.SpringContextUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.ServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.filter.OncePerRequestFilter;
 
+@EnableMethodSecurity
 @Configuration
 @EnableWebSecurity
 public class DefaultSecurityConfig {
 
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, ServletRequest httpServletRequest) throws Exception {
 
         http
                 // 开启授权保护
@@ -41,11 +40,12 @@ public class DefaultSecurityConfig {
                         .anyRequest().
                         // 已认证的请求会被自动授权
                                 authenticated());
+
         //鉴权
-        http.addFilterBefore(new TokenAuthFilter(this.authenticationManager), BasicAuthenticationFilter.class);
+        http.addFilterAt(new TokenAuthFilter(this.authenticationManager), BasicAuthenticationFilter.class);
         // 关闭 csrf CSRF（跨站请求伪造）是一种网络攻击，攻击者通过欺骗已登录用户，诱使他们在不知情的情况下向受信任的网站发送请求。
         http.csrf(csrf -> csrf.disable());
-        http.authenticationProvider(new AAA());
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 
@@ -64,6 +64,7 @@ public class DefaultSecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2A, 10); // 使用 bcrypt 加密
     }
+
 
 
 }

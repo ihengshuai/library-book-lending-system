@@ -36,6 +36,7 @@ public class AuthUserServiceImpl extends ServiceImpl<AuthUserMapper, AuthUser> i
            user.setRoles(new ArrayList<>());
         }
         return user;
-
     }
+
+
 }
