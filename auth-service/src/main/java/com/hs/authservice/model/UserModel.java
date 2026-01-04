@@ -1,35 +1,22 @@
-package com.hs.authservice.entity;
+package com.hs.authservice.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
-/**
- * <p>
- * 用户表
- * </p>
- *
- * @author chenkk
- * @since 2025-12-30
- */
-@TableName("auth_user")
 @Data
 @Builder
-public class AuthUser implements Serializable {
+public class UserModel implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = -2735334614506387257L;
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -112,27 +99,14 @@ public class AuthUser implements Serializable {
      */
     private String updatedUser;
 
+    /**
+     * 角色集
+     */
+    List<RoleModel> roles;
 
-    @Override
-    public String toString() {
-        return "AuthUser{" +
-            "id = " + id +
-            ", username = " + username +
-            ", password = " + password +
-            ", status = " + status +
-            ", name = " + name +
-            ", nickname = " + nickname +
-            ", isAdmin = " + isAdmin +
-            ", email = " + email +
-            ", lockedTime = " + lockedTime +
-            ", phone = " + phone +
-            ", salt = " + salt +
-            ", sex = " + sex +
-            ", avatar = " + avatar +
-            ", createdDate = " + createdDate +
-            ", updatedDate = " + updatedDate +
-            ", createdUser = " + createdUser +
-            ", updatedUser = " + updatedUser +
-            "}";
-    }
+    /**
+     * 菜单集
+     */
+    List<MenuModel> menus;
+
 }

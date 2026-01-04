@@ -1,8 +1,9 @@
-package com.hs.auth.service;
+package com.hs.authservice.service;
 
-import com.hs.auth.model.User;
-import com.hs.authservice.entity.AuthUser;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hs.authservice.entity.AuthUser;
+import com.hs.authservice.model.UserModel;
+import org.springframework.security.core.userdetails.User;
 
 /**
  * <p>
@@ -21,5 +22,5 @@ public interface IAuthUserService extends IService<AuthUser> {
      * @param username
      * @return
      */
-    User selectOne(String username);
+    UserModel selectOne(String username);
 }

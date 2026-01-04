@@ -1,13 +1,12 @@
 package com.hs.auth.controller;
 
-import com.hs.auth.service.IAuthUserService;
 import com.hs.authservice.dto.UserDto;
 import com.hs.authservice.entity.AuthUser;
+import com.hs.authservice.service.IAuthUserService;
 import com.hs.core.common.ResultVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 
 /**
  * <p>
