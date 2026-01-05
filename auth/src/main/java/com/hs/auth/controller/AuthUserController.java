@@ -29,7 +29,7 @@ public class AuthUserController {
 
     }
 
-    @PreAuthorize("hasRole('ad')")
+    @PreAuthorize("hasRole('dcgl')")
     @GetMapping("/getUser")
     public ResultVo getUser() {
         return ResultVo.success();

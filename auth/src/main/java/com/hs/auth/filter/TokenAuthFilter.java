@@ -2,25 +2,40 @@ package com.hs.auth.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.hs.auth.model.TokenInfo;
+import com.hs.auth.utils.SpringContextUtil;
+import com.hs.auth.utils.TokenUtil;
+import com.hs.authservice.model.MenuModel;
+import com.hs.authservice.model.RoleModel;
+import com.hs.authservice.model.UserModel;
+import com.hs.core.exception.AuthException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * 自定义 token 过滤器
  */
+
+
 public class TokenAuthFilter extends BasicAuthenticationFilter {
+
 
 
 
@@ -39,8 +54,15 @@ public class TokenAuthFilter extends BasicAuthenticationFilter {
             return;
         }
 
+        TokenUtil tokenUtil = SpringContextUtil.getBean(TokenUtil.class);
+        // 判断token是否有效
+        if(!tokenUtil.validateToken(token))    {
+            throw new AuthException("500","请登录");
+        }
+
+
         //认证授权
-        doAuthorization(new TokenInfo(), token);
+        doAuthorization(token);
         chain.doFilter(request, response);
 
 
@@ -51,17 +73,21 @@ public class TokenAuthFilter extends BasicAuthenticationFilter {
      * 认证授权
      * 1、第一次登陆的接口创建
      *
-     * @param tokenInfo
      * @param token
      */
-    private void doAuthorization(TokenInfo tokenInfo, String token) {
+    private void doAuthorization(String token) {
+        TokenUtil tokenUtil = SpringContextUtil.getBean(TokenUtil.class);
+        UserModel user = tokenUtil.getUserByToken(token);
+        List<RoleModel> roles = user.getRoles();
+        Stream<String> roleCodes = roles.stream().map(RoleModel::getCode);
+        user.getMenus().stream().map(MenuModel::getPerms);
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
         //角色编码集合
         List<String> roleCodeList = new ArrayList<>();
-        roleCodeList.add("admin");
+
         roleCodeList = Optional.ofNullable(roleCodeList).orElse(new ArrayList<>());
         //设置角色
-        roleCodeList.forEach(r -> {
+        roleCodes.forEach(r -> {
             authorityList.add(new SimpleGrantedAuthority("ROLE_" + r));
         });
         //权限标识集合
@@ -73,7 +99,7 @@ public class TokenAuthFilter extends BasicAuthenticationFilter {
         });
 
         //配置token认证用户的权限
-        UsernamePasswordAuthenticationToken userAuthorization = new UsernamePasswordAuthenticationToken("admin", null, authorityList);
+        UsernamePasswordAuthenticationToken userAuthorization = new UsernamePasswordAuthenticationToken(user.getUsername(), null, authorityList);
         // 执行认证
         SecurityContextHolder.getContext().setAuthentication(userAuthorization);
 

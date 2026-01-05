@@ -15,7 +15,7 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class UserDetailServiceImpl implements UserDetailsService {
 
-   public final IAuthUserService authUserService;
+    public final IAuthUserService authUserService;
 
 
     @Override
@@ -23,12 +23,15 @@ public class UserDetailServiceImpl implements UserDetailsService {
         User user = null;
         UserModel userModel = authUserService.selectOne(username);
 
-        if(null == userModel ){
+        if (null == userModel) {
             throw new AuthException("403", "用户不存在2");
         }
 
-        user = new User(userModel.getUsername(), userModel.getPassword(),new ArrayList<>());
+        user = new User(userModel.getUsername(), userModel.getPassword(), new ArrayList<>());
         //todo  查权限 角色
-        return user;	// UserDetailsImpl 是我们实现的类
+        return user;    // UserDetailsImpl 是我们实现的类
     }
+
+
 }
+

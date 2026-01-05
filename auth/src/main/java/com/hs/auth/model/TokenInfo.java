@@ -5,12 +5,21 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+
 @Data
 public class TokenInfo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 5652768429068077049L;
+
+    /**
+     * 用户信息
+     */
     private UserModel userModel;
+
+    /**
+     * token
+     */
     private String token;
 
 }

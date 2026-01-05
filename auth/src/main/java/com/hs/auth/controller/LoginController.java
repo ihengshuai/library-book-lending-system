@@ -1,8 +1,12 @@
 package com.hs.auth.controller;
 
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
+import com.hs.auth.utils.TokenUtil;
 import com.hs.authservice.dto.LoginDto;
 import com.hs.auth.model.TokenInfo;
+import com.hs.authservice.model.UserModel;
+import com.hs.authservice.service.IAuthUserService;
 import com.hs.core.common.ResultVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
-
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -25,6 +27,10 @@ public class LoginController {
 
 
     public final AuthenticationManager authenticationManager;
+
+    public final IAuthUserService authUserService;
+
+    public final TokenUtil tokenUtil;
 
     @PostMapping("/login")
     public ResultVo login(@RequestBody LoginDto loginDto) {
@@ -40,27 +46,26 @@ public class LoginController {
             // 认证成功，设置安全上下文
             SecurityContextHolder.getContext().setAuthentication(authentication);
             // 创建 token
-           /* if(StrUtil.equals(loginDto.getUsername(), "admin")){
-                TokenInfo tokenInfo = new TokenInfo();
-                tokenInfo.setToken("uuid1234567");
-                ResultVo<TokenInfo> result = new ResultVo<>();
-                result.setData(tokenInfo);
 
-                return result;
-            }*/
+            UserModel userModel = authUserService.selectOne(loginDto.getUsername());
+
+            userModel.setPassword("****");
+
+            String token = tokenUtil.generateToken(userModel);
 
             TokenInfo tokenInfo = new TokenInfo();
-            tokenInfo.setToken("uuid1234567");
-            ResultVo<TokenInfo> result = new ResultVo<>();
-            result.setData(tokenInfo);
 
-            return result;
+            tokenInfo.setToken(token);
+            tokenInfo.setUserModel(userModel);
+            ResultVo success = ResultVo.success();
+            success.setData(tokenInfo);
+
+            return success;
         } catch (AuthenticationException e) {
             // 认证失败，返回登录页面并显示错误信息
 
             return ResultVo.fail();
         }
-
 
     }
 }
