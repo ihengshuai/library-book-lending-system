@@ -3,12 +3,12 @@ package com.hs.authservice.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
  */
 @TableName("auth_user")
 @Data
-@Builder
 public class AuthUser implements Serializable {
 
     @Serial
@@ -70,7 +69,7 @@ public class AuthUser implements Serializable {
     /**
      * 锁定时间
      */
-    private LocalDateTime lockedTime;
+    private Date lockedTime;
 
     /**
      * 手机号码
@@ -95,12 +94,12 @@ public class AuthUser implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createdDate;
+    private Date createdDate;
 
     /**
      * 更新时间
      */
-    private LocalDateTime updatedDate;
+    private Date updatedDate;
 
     /**
      * 创建人

@@ -2,24 +2,28 @@ package com.hs.auth.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hs.auth.constant.AuthConstant;
+import com.hs.auth.constant.UserStatus;
 import com.hs.auth.mapper.*;
+import com.hs.auth.utils.EncryptUtil;
+import com.hs.auth.utils.NicknameUtil;
+import com.hs.authservice.dto.UserDto;
 import com.hs.authservice.entity.*;
 import com.hs.authservice.model.MenuModel;
 import com.hs.authservice.model.RoleModel;
 import com.hs.authservice.model.UserModel;
 import com.hs.authservice.service.IAuthUserService;
+import com.hs.core.common.ResultVo;
 import com.hs.core.exception.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -58,7 +62,6 @@ public class AuthUserServiceImpl extends ServiceImpl<AuthUserMapper, AuthUser> i
         List<AuthUserRole> authUserRoles = authUserRoleMapper.selectList(userRoleQw);
 
         if (CollUtil.isNotEmpty(authUserRoles)) {
-            // todo 查询角色列表获取角色编码
             List<Long> roleIds = authUserRoles.stream().map(AuthUserRole::getRoleId).toList();
             QueryWrapper<AuthRole> roleQueryWrapper = new QueryWrapper<>();
             roleQueryWrapper.in("id", roleIds);
@@ -90,6 +93,24 @@ public class AuthUserServiceImpl extends ServiceImpl<AuthUserMapper, AuthUser> i
 
 
         return user;
+    }
+
+    @Override
+    public ResultVo addUser(UserDto userDto) {
+        AuthUser user = new AuthUser();
+        BeanUtil.copyProperties(userDto, user);
+        user.setPassword(EncryptUtil.bCryptEncoder(AuthConstant.DEFAULT_PASSWORD));
+        //如果没有填写名称 默认起随机名字
+        if(StrUtil.isBlank(user.getNickname())){
+            user.setNickname( NicknameUtil.generateFunnyNickname());
+        }
+        user.setStatus(UserStatus.ENABLE.getCode());
+        user.setIsAdmin(0);
+        user.setCreatedUser("sys");
+        user.setCreatedDate(new Date());
+
+        this.save(user);
+        return ResultVo.success();
     }
 
 

@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.hs.auth.utils.TokenUtil;
 import com.hs.authservice.dto.LoginDto;
 import com.hs.auth.model.TokenInfo;
+import com.hs.authservice.dto.UserDto;
 import com.hs.authservice.model.UserModel;
 import com.hs.authservice.service.IAuthUserService;
 import com.hs.core.common.ResultVo;
@@ -56,16 +57,23 @@ public class LoginController {
             TokenInfo tokenInfo = new TokenInfo();
 
             tokenInfo.setToken(token);
+
             tokenInfo.setUserModel(userModel);
+
             ResultVo success = ResultVo.success();
+
             success.setData(tokenInfo);
 
             return success;
         } catch (AuthenticationException e) {
             // 认证失败，返回登录页面并显示错误信息
-
             return ResultVo.fail();
         }
+    }
+
+    @PostMapping("/register")
+    public ResultVo register(@RequestBody UserDto user){
+        return authUserService.addUser(user);
 
     }
 }

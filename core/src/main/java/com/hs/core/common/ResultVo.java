@@ -34,6 +34,10 @@ public class ResultVo<T> implements Serializable {
      */
     private String msg;
 
+    public ResultVo(String code,String msg){
+        this.code = code;
+        this.msg = msg;
+    }
 
     public ResultVo(HttpResponseStatus status) {
         this.code = status.getCode();

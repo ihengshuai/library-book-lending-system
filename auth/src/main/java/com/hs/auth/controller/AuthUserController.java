@@ -21,13 +21,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthUserController {
 
-    public final IAuthUserService authUserService;
-
-    @PostMapping("/addUer")
-    public ResultVo<AuthUser> addUser(@RequestBody UserDto userDto) {
-        return ResultVo.success();
-
-    }
 
     @PreAuthorize("hasRole('dcgl')")
     @GetMapping("/getUser")
